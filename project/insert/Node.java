@@ -27,6 +27,7 @@ public class Node {
       node.insert(key);
       node.accept(new Reporter());
       while (doubleRed(node)) {
+        System.out.print("Fixing it...");
         node = fixIt(node);
         node.color = BLACK;
         (new java.util.Scanner(System.in)).nextLine();
@@ -51,20 +52,31 @@ public class Node {
     else return node.left != null && doubleRed(node.left) || node.right != null && doubleRed(node.right);
   }
   public static Node fixIt(Node n) {
-    System.out.print("Fixing it... ");
+    // System.out.print("Fixing it... ");
+    Node n1 = null, n2 = null, n3 = null, t1 = null, t2 = null, t3 = null, t4 = null;
     if (n.color == BLACK && n.left != null && n.left.color == RED && n.left.right != null && n.left.right.color == RED) {
-      // System.out.println("I detected it...");
-      // System.exit(0);
-      Node n1 = n.left, n2 = n.left.right, n3 = n, t1 = n1.left, t2 = n2.left, t3 = n2.right, t4 = n3.right;
-      n1.color = BLACK;
-      n1.right = t2;
-      n3.left = t3;
-      n2.left = n1;
-      n2.right = n3;
-      return n2;
+      n1 = n.left; n2 = n.left.right; n3 = n; t1 = n1.left; t2 = n2.left; t3 = n2.right; t4 = n3.right;
+    } else if (n.color == BLACK && n.left != null && n.left.color == RED && n.left.left != null && n.left.left.color == RED) {
+      n1 = n.left.left; n2 = n.left; n3 = n; t1 = n1.left; t2 = n1.right; t3 = n2.right; t4 = n3.right;
+    } else if (n.color == BLACK && n.right != null && n.right.color == RED && n.right.left != null && n.right.left.color == RED) {
+      n1 = n; n2 = n.right.left; n3 = n.right; t1 = n1.left; t2 = n2.left; t3 = n2.right; t4 = n3.right;
+    } else if (n.color == BLACK && n.right != null && n.right.color == RED && n.right.right != null && n.right.right.color == RED) {
+      n1 = n; n2 = n1.right; n3 = n1.right.right; t1 = n1.left; t2 = n2.left; t3 = n3.left; t4 = n3.right;
     } else {
-      return n;
+      if (n.left == null && n.right == null) return n;
+      else if (n.left == null) return new Node(n.key, null, fixIt(n.right), n.color); 
+      else if (n.right == null) return new Node(n.key, fixIt(n.left), null, n.color); 
+      else return new Node(n.key, fixIt(n.left), fixIt(n.right), n.color);
     }
+    n1.color = BLACK;
+    n1.left = t1;
+    n1.right = t2;
+    n3.color = BLACK;
+    n3.left = t3;
+    n3.right = t4;
+    n2.left = n1;
+    n2.right = n3;
+    return n2;
   }
   public boolean find(int key) {
     if (key == this.key) return true;
