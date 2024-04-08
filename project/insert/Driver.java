@@ -1,56 +1,43 @@
 public class Driver {
     public static void main(String[] args) {
-        int[] values = new int[] { 4, 2, 3, 1, 5, 6 };
-        Node a = null;
-        for (int i : values) {
-          System.out.println("Adding: " + i);
-          if (a == null)
-            a = new Node(i);
-          else
-            a.insert(i);
-          a.accept(new Reporter()); System.out.println("---------------");
-        }
+        System.out.println("Inserting " + 3 + " into the empty tree...");
+        Node n = Node.insertInto(null, 3);
+        n.accept(new Reporter());
+        System.out.println("-------------");
+        System.out.println("Adding " + 1);
+        n = Node.insertInto(n, 1);
+        // n.accept(new Reporter());
+        System.out.println("-------------");
+        System.out.println("Adding " + 2);
+        n = Node.insertInto(n, 2);
+        // n.accept(new Reporter());
+        System.out.println("-------------");
     }
 }
-/*******(sample run:
 
+/****(sample run)***:
+
+dgerman@silo:/l/www/classes/h212/spr2024/project$ javac Driver.java
 dgerman@silo:/l/www/classes/h212/spr2024/project$ java Driver
-Adding: 4
-4
----------------
-Adding: 2
-  _4
+Inserting 3 into the empty tree...
+3
+-------------
+Adding 1
+  _3
  /
-[2]
----------------
-Adding: 3
-  ____4
+[1]
+-------------
+Adding 2
+  ____3
  /
-[2]_
+[1]_
     \
-   [3]
----------------
-Adding: 1
-     ____4
-    /
-  _[2]_
- /     \
-[1]   [3]
----------------
-Adding: 5
-     ____4_
-    /      \
-  _[2]_   [5]
- /     \
-[1]   [3]
----------------
-Adding: 6
-     ____4_
-    /      \
-  _[2]_   [5]_
- /     \      \
-[1]   [3]    [6]
----------------
-dgerman@silo:/l/www/classes/h212/spr2024/project$
+   [2]
+Fixing it...
+ 2
+/ \
+1 3
+-------------
+dgerman@silo:/l/www/classes/h212/spr2024/project$ 
 
- *********************/
+ ****(end of sample run)***/
